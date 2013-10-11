@@ -40,7 +40,7 @@ define([
     initializeCommentCollection: function () {
       var self = this;
 
-      if (this.commentCollection) { this.commentCollection; }
+      if (this.commentCollection) { this.renderView() }
       else { this.commentCollection = new CommentCollection(); }
 
       this.commentCollection.fetch({
@@ -97,7 +97,6 @@ define([
         comments: collection.toJSON()[0].comments
       }
 
-      _.each(data.comments, function (comment) {
       var depth = {};
       for (var i = 0; i < data.comments.length; i += 1) {
         if (data.comments[i].topic === true) {
@@ -109,7 +108,7 @@ define([
         }
       }
 
-      _.each(data.comments, function (comment, index, depth) {
+      _.each(data.comments, function (comment) {
 
         // Render the topic view and then in that view spew out all of its children.
         // console.log("Comment's with children:");
