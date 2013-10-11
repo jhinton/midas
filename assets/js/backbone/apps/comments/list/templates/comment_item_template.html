@@ -2,7 +2,7 @@
   <%= value %>
 
   <% if (depth <= 1) { %>
-    <a href="#reply-to-comment" class="reply-to-<%= id %>">Reply</a>
+    <a href="#reply-to-comment" class="reply-to-<%= id %>" data-depth="<%= depth %>">Reply</a>
   <% } %>
 
   <ul id="comment-list-<%= id %>">

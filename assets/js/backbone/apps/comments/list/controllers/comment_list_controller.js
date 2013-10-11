@@ -17,11 +17,11 @@ define([
     el: ".comment-list-wrapper",
 
     events: {
-      "click .new-topic"              : "newTopic",
-      "click .reply-to"               : "reply",
-      "click [data-topic='true']"     : "toggleTopic",
-      "mouseenter .comment-user-link" : popovers.popoverPeopleOn,
-      "mouseleave .comment-user-link" : popovers.popoverPeopleOff
+      "click .new-topic"                  : "newTopic",
+      "click [data-topic='true']"         : "toggleTopic",
+      "mouseenter .comment-user-link"     : popovers.popoverPeopleOn,
+      "mouseleave .comment-user-link"     : popovers.popoverPeopleOff,
+      "click a[href='#reply-to-comment']" : "reply"
     },
 
     initialize: function () {
@@ -31,7 +31,7 @@ define([
       this.initializeListeners();
 
       // Populating the DOM after a comment was created.
-      this.listenToOnce(this.commentCollection, "comment:save:success", function (modelJson, currentTarget) {
+      this.listenTo(this.commentCollection, "comment:save:success", function (model, modelJson, currentTarget) {
         self.addNewCommentToDom(modelJson, currentTarget);
       });
 
@@ -134,7 +134,7 @@ define([
               el: '#comment-form-' + comment.id,
               projectId: comment.projectId,
               parentId: comment.id,
-              collection: self.options.collection
+              collection: self.collection
             });
           } else {
 
@@ -180,6 +180,10 @@ define([
 
     addNewCommentToDom: function (modelJson, currentTarget) {
       modelJson['user'] = window.cache.currentUser;
+
+      if (modelJson.depth === undefined) {
+        modelJson['depth'] += parseInt($(currentTarget).parent().prev().prev().attr("data-depth"));
+      }
 
       if (self.comment) self.comment.cleanup();
       self.comment = new CommentItemView({

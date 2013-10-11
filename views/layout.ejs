@@ -21,7 +21,10 @@
     <!-- listen on socket.io for incoming messages -->
     <script type="text/javascript" src="/js/vendor/sails/app.js"></script>
 
+    <!-- There be dragons here (aka, don't remove and put into require.js flow, as that fails 1/5 times) -->
     <script type="text/javascript" src="/js/vendor/jquery.js"></script>
+
+    <!-- Entry point for our app -->
     <script type="text/javascript" data-main="/js/backbone/config/require_config.js" src="/js/vendor/require.js"></script>
 
   </head>
@@ -73,9 +76,6 @@
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="/auth/logout">Logout</a></li>
                 </ul>
               </li>
-              <!--
-              <li class="navbar-text"><a href="/auth/logout"><i class="icon-minus-sign"></i> Logout</a></li>
-            -->
             <% } else { %>
               <li class="navbar-text"><a href="/auth"><i class="icon-plus-sign"></i> Sign In</a></li>
             <% }; %>
