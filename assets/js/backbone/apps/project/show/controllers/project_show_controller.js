@@ -25,6 +25,9 @@ define([
 
 		el: "#container",
 
+		// These are pointers to the children that need to be initialized on rendering of this controller.
+		children: [EventListController, TaskListController, CommentListController],
+
 		// Set the model to null, before it is fetched from the server.
 		// This allows us to clear out the previous data from the list_view,
 		// and get ready for the new data for the project show view.
@@ -54,9 +57,8 @@ define([
 			});
 
 			rendering.on("project:show:rendered", function () {
-				self.initializeItemViewControllers();
+				self.delegate(self.children);
 				self.initializeHandlers();
-				self.initializeLikes();
 				self.initializeUI();
 			});
 
@@ -97,18 +99,7 @@ define([
 			this.projectShowItemView  = new ProjectItemView({ model: this.model }).render();
 		},
 
-		initializeItemViewControllers: function () {
-			if (this.taskListController) this.taskListController.cleanup();
-			this.taskListController = new TaskListController({ projectId: this.model.id });
-
-			if (this.eventListController) this.eventListController.cleanup();
-			this.eventListController = new EventListController({ projectId: this.model.id })
-
-			if (this.commentListController) this.commentListController.initialize();
-			this.commentListController = new CommentListController({ projectId: this.model.id })
-		},
-
-		initializeLikes: function() {
+		initializeLikes: function () {
 			$("#like-number").text(this.model.attributes.likeCount);
 			if (parseInt(this.model.attributes.likeCount) === 1) {
 				$("#like-text").text($("#like-text").data('singular'));
